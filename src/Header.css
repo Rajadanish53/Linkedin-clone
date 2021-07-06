@@ -34,5 +34,6 @@
 }
 
 .header__right{
+    align-items: center;
     display: flex;
 }
