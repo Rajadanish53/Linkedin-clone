@@ -15,12 +15,13 @@ function Login() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userAuth) => {
+ 
         dispatch(
           UserLogin({
             email: userAuth.user.email,
             uid: userAuth.user.uid,
-            displayName: userAuth.name,
-            photoUrl: userAuth.profilePic,
+            displayName: userAuth.user.displayName,
+            photoUrl: userAuth.user.photoURL,
           })
         );
       })

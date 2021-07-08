@@ -8,31 +8,34 @@ import EventNoteIcon from "@material-ui/icons/EventNote";
 import CalendarViewDayIcon from "@material-ui/icons/CalendarViewDay";
 import InputOption from "./InputOption";
 import { db } from "./firebase";
-import firebase from "firebase"
+import firebase from "firebase";
 import { useSelector } from "react-redux";
+import FlipMove from "react-flip-move";
 function Feed() {
-  const user = useSelector(state => state.user)
-  const [input, setinput] = useState("")
+  const user = useSelector((state) => state.user);
+  const [input, setinput] = useState("");
   const [posts, setPosts] = useState([]);
   useEffect(() => {
-    db.collection("posts").orderBy('timestamp','desc').onSnapshot((snapshot) => {
-      setPosts(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    });
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setPosts(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      });
   }, []);
   let sendPost = (e) => {
     e.preventDefault();
     db.collection("posts").add({
-      name:user.displayName,
-      description:user.email,
-      message:input,
-      photoUrl:user.photoUrl || " ",
-      timestamp:firebase.firestore.FieldValue.serverTimestamp()
-    })
+      name: user.displayName,
+      description: user.email,
+      message: input,
+      photoUrl: user.photoUrl || " ",
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
     setinput("");
   };
 
@@ -42,7 +45,11 @@ function Feed() {
         <div className="feed__input">
           <CreateIcon />
           <form>
-            <input type="text" value={input} onChange={e=>setinput(e.target.value)}/>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setinput(e.target.value)}
+            />
             <button onClick={sendPost} type="submit">
               Send
             </button>
@@ -60,16 +67,19 @@ function Feed() {
         </div>
       </div>
       {/* Posts */}
-      {posts.map(({id,data:{name,description,message,photoUrl}})=>{
-        return <Post
-        key={id}
-        description={description}
-        name={name}
-        message={message}
-        photoUrl={photoUrl}
-      />
-      })}
-      
+      <FlipMove>
+        {posts.map(({ id, data: { name, description, message, photoUrl } }) => {
+          return (
+            <Post
+              key={id}
+              description={description}
+              name={name}
+              message={message}
+              photoUrl={photoUrl}
+            />
+          );
+        })}
+      </FlipMove>
     </div>
   );
 }

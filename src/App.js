@@ -1,5 +1,6 @@
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import Widgets from "./Widgets"
 import "./App.css";
 import Feed from "./Feed";
 import { useSelector, useDispatch } from "react-redux";
@@ -38,10 +39,11 @@ const App = () => {
         <div className="app__body">
           <Sidebar />
           <Feed />
+          <Widgets />
         </div>
       )}
 
-      {/* widgets */}
+    
     </div>
   );
 };
